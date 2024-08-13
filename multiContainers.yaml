@@ -1,0 +1,22 @@
+apiVersion:  v1
+kind: Pod
+metadata:
+ name: two-containers-in-pod
+spec: 
+ restartPolicy: Never
+ volumes: 
+ - name: shared-storage
+   emptyDir: {}
+ containers:
+ - name: nginx-container
+   image: nginx
+   volumeMounts:
+   - name: shared-storage
+     mountPath: /usr/share/nginx/html
+ - name: ubuntu-container
+   image: ubuntu
+   volumeMounts:
+   - name: shared-storage
+     mountPath: /pod-area
+   command: ["/bin/sh"]
+   args: ["-c", "echo hello from youssef container > /pod-area/index.html && sleep 3600"]
